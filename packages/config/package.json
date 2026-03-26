@@ -1,0 +1,18 @@
+{
+  "name": "@proworkio/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./env/common": "./src/env/common.ts",
+    "./env/web": "./src/env/web.ts",
+    "./env/admin": "./src/env/admin.ts",
+    "./env/server": "./src/env/server.ts",
+    "./tsconfig/base": "./tsconfig/base.json",
+    "./tsconfig/next": "./tsconfig/next.json",
+    "./tsconfig/library": "./tsconfig/library.json"
+  },
+  "dependencies": {
+    "zod": "4.3.6"
+  }
+}

@@ -1,0 +1,158 @@
+openapi: 3.1.0
+info:
+  title: Proworkio Application API
+  version: 0.1.0
+  description: Custom application endpoints for request submission, checkout initiation, and operational webhooks.
+servers:
+  - url: https://proworkio.example.com
+paths:
+  /api/requests:
+    post:
+      summary: Submit a guest or authenticated request draft
+      operationId: submitRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitRequestInput"
+      responses:
+        "201":
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitRequestResponse"
+  /api/requests/confirm:
+    post:
+      summary: Confirm a request by token
+      operationId: confirmRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Confirmation result
+  /api/requests/claim:
+    post:
+      summary: Claim guest requests into an authenticated account
+      operationId: claimRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Claim result
+  /api/payments/lead-unlocks/checkout:
+    post:
+      summary: Create a Stripe Checkout session for lead unlock
+      operationId: createLeadUnlockCheckout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [requestId]
+              properties:
+                requestId:
+                  type: string
+      responses:
+        "200":
+          description: Checkout URL
+  /api/payments/subscriptions/checkout:
+    post:
+      summary: Create a Stripe Checkout session for VIP subscription
+      operationId: createVipCheckout
+      responses:
+        "200":
+          description: Checkout URL
+  /api/payments/customer-portal:
+    post:
+      summary: Create a Stripe customer portal session
+      operationId: createCustomerPortalSession
+      responses:
+        "200":
+          description: Portal URL
+  /api/webhooks/stripe:
+    post:
+      summary: Receive Stripe webhooks
+      operationId: handleStripeWebhook
+      responses:
+        "200":
+          description: Event accepted
+components:
+  schemas:
+    SubmitRequestInput:
+      type: object
+      required:
+        - categoryId
+        - title
+        - description
+        - urgency
+        - postalCode
+        - locationLabel
+        - deadlineLabel
+        - contact
+        - termsAccepted
+      properties:
+        categoryId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        urgency:
+          type: string
+          enum: [normal, fast, urgent]
+        postalCode:
+          type: string
+        locationLabel:
+          type: string
+        deadlineLabel:
+          type: string
+        dynamicValues:
+          type: object
+          additionalProperties: true
+        photos:
+          type: array
+          items:
+            type: string
+        contact:
+          type: object
+          required: [name, email, phone, preferredChannel]
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+            phone:
+              type: string
+            preferredChannel:
+              type: string
+              enum: [email, whatsapp, sms]
+        termsAccepted:
+          type: boolean
+    SubmitRequestResponse:
+      type: object
+      required: [requestId, confirmationToken]
+      properties:
+        requestId:
+          type: string
+        confirmationToken:
+          type: string
