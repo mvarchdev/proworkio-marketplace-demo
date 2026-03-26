@@ -1,13 +1,10 @@
-"use client";
-
 import { Badge, Card } from "@proworkio/ui";
 
 import {
-  getResourceConfig,
   type BadgeCell,
   type CellValue,
-  type ResourceKey,
 } from "@/lib/admin-data";
+import type { ResourceViewModel } from "@/lib/admin-live-data";
 import { PageHeader } from "./page-header";
 
 function toneToClass(tone?: BadgeCell["tone"]) {
@@ -34,10 +31,7 @@ function renderCell(value: CellValue) {
   );
 }
 
-export function ResourceView({ resource }: Readonly<{ resource: ResourceKey }>) {
-  const config = getResourceConfig(resource);
-  const rows = config.rows;
-
+export function ResourceView({ config, rows, signals, badgeLabel, surfaceLabel }: ResourceViewModel) {
   return (
     <section className="space-y-8">
       <PageHeader
@@ -45,7 +39,7 @@ export function ResourceView({ resource }: Readonly<{ resource: ResourceKey }>) 
         title={config.title}
         description={config.description}
         action={config.primaryAction}
-        badge={`Záznamov: ${rows.length}`}
+        badge={badgeLabel}
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.8fr)]">
@@ -56,12 +50,12 @@ export function ResourceView({ resource }: Readonly<{ resource: ResourceKey }>) 
               <h3 className="mt-1 text-lg font-semibold text-slate-900">Záznamy pripravené pre operátora</h3>
             </div>
             <Badge variant="muted" className="bg-slate-100 text-slate-700">
-              Live demo
+              {surfaceLabel}
             </Badge>
           </div>
 
           <div className="grid gap-3 border-b border-slate-200 px-6 py-5 md:grid-cols-3">
-            {config.signals.map((signal) => (
+            {signals.map((signal) => (
               <div key={signal.label} className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-4">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm font-medium text-slate-600">{signal.label}</p>
@@ -76,32 +70,41 @@ export function ResourceView({ resource }: Readonly<{ resource: ResourceKey }>) 
           </div>
 
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
-                <tr>
-                  {config.columns.map((column) => (
-                    <th
-                      key={column.key}
-                      scope="col"
-                      className={`px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.24em] text-slate-500 ${column.className ?? ""}`}
-                    >
-                      {column.label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 bg-white">
-                {rows.map((row) => (
-                  <tr key={row.id} className="transition-colors hover:bg-slate-50/70">
+            {rows.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <p className="text-base font-semibold text-slate-900">Zatiaľ bez záznamov</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Hosted projekt je pripravený, ale táto sekcia ešte nemá seed alebo produkčné udalosti.
+                </p>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
+                  <tr>
                     {config.columns.map((column) => (
-                      <td key={column.key} className={`px-5 py-4 align-top ${column.className ?? ""}`}>
-                        {renderCell(row[column.key] ?? "")}
-                      </td>
+                      <th
+                        key={column.key}
+                        scope="col"
+                        className={`px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.24em] text-slate-500 ${column.className ?? ""}`}
+                      >
+                        {column.label}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {rows.map((row) => (
+                    <tr key={row.id} className="transition-colors hover:bg-slate-50/70">
+                      {config.columns.map((column) => (
+                        <td key={column.key} className={`px-5 py-4 align-top ${column.className ?? ""}`}>
+                          {renderCell(row[column.key] ?? "")}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </Card>
 

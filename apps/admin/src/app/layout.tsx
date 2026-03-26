@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { AdminProviders } from "@/components/admin-providers";
 import { AdminShell } from "@/components/admin-shell";
+import { getAdminShellState } from "@/lib/admin-live-data";
 
 import "./globals.css";
 
@@ -27,11 +28,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  const shellState = getAdminShellState();
+
   return (
     <html lang="sk" className={`${sora.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-screen bg-slate-950 text-slate-950">
         <AdminProviders>
-          <AdminShell>{children}</AdminShell>
+          <AdminShell shellState={shellState}>{children}</AdminShell>
         </AdminProviders>
       </body>
     </html>

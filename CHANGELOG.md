@@ -10,4 +10,5 @@
 - Added Playwright end-to-end coverage for the demo request and company onboarding journeys.
 - Added a shared Next.js startup wrapper so Render-style runtime arguments work for both `apps/web` and `apps/admin`.
 - Fixed hosted Supabase RPC compatibility by qualifying pgcrypto extension calls and resolving `RETURNS TABLE` variable conflicts inside `submit_guest_request`.
+- Switched the admin console from demo-only provider data to a Supabase-backed server read model with live hosted dashboard/resource views and static fallback for local no-secret runs.
 - Validated `pnpm typecheck`, `pnpm lint`, `pnpm test`, and production builds for `apps/web` and `apps/admin`.

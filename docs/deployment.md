@@ -11,6 +11,7 @@ The intended deployment path is:
 
 - The monorepo can also be hosted as a demo on Render using the package `start` scripts from `apps/web` and `apps/admin`.
 - Those scripts use the shared startup wrapper in `scripts/next-start.mjs` so Render-style forwarded arguments such as `--hostname` and `--port` are handled correctly.
+- The hosted admin needs `SUPABASE_SERVICE_ROLE_KEY` in addition to the public Supabase URL and publishable key so the server-rendered operational console can query billing, ops, and protected request data.
 - This path is appropriate for seeded demo environments and operator previews, not as the preferred production target.
 
 ## Environments

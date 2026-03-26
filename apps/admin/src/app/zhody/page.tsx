@@ -1,5 +1,8 @@
+import { getResourceViewModel } from "@/lib/admin-live-data";
 import { ResourceView } from "@/components/resource-view";
 
-export default function MatchesPage() {
-  return <ResourceView resource="matches" />;
+export default async function MatchesPage() {
+  const model = await getResourceViewModel("matches");
+
+  return <ResourceView {...model} />;
 }

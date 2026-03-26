@@ -1,6 +1,6 @@
 # Proworkio Admin
 
-Operačný panel pre Proworkio. Táto baseline verzia používa Next.js App Router, Refine core, zdieľané UI prvky a demo dátový provider, aby bolo možné vyvíjať workflowy bez backend závislostí.
+Operačný panel pre Proworkio. Admin používa Next.js App Router, zdieľané UI prvky a server-side read model nad Supabase, takže na hostovanom prostredí číta reálne prevádzkové dáta. Ak chýba `SUPABASE_SERVICE_ROLE_KEY`, automaticky spadne do statického fallbacku pre lokálny vývoj.
 
 ## Spustenie
 
@@ -30,7 +30,7 @@ Admin beží štandardne na `http://localhost:3001`.
 
 ## Implementačné poznámky
 
-- Dáta v tejto baseline pochádzajú z demo provideru v `src/lib/demo-provider.ts`.
 - Navigácia a layout sú v `src/components/admin-shell.tsx`.
-- Resource konfigurácia a obsah sekcií sú centralizované v `src/lib/admin-data.ts`.
-- Pri prechode na reálne API stačí nahradiť `demoDataProvider` za produkčný provider a ponechať shell aj stránky.
+- Resource metadata a fallback copy sú centralizované v `src/lib/admin-data.ts`.
+- Live read model a mapovanie hostovaných Supabase dát sú v `src/lib/admin-live-data.ts`.
+- Prezentačné formátovanie a status badge mapovania sú v `src/lib/admin-presenters.ts`.

@@ -20,6 +20,7 @@ import {
 import { Badge, Button } from "@proworkio/ui";
 
 import { dashboardCopy, resourceConfigs, resourceOrder, type ResourceKey } from "@/lib/admin-data";
+import type { AdminShellState } from "@/lib/admin-live-data";
 
 const navIcons: Record<ResourceKey, typeof Users> = {
   users: Users,
@@ -35,7 +36,13 @@ const navIcons: Record<ResourceKey, typeof Users> = {
   auditLogs: ShieldCheck,
 };
 
-export function AdminShell({ children }: Readonly<{ children: ReactNode }>) {
+export function AdminShell({
+  children,
+  shellState,
+}: Readonly<{
+  children: ReactNode;
+  shellState: AdminShellState;
+}>) {
   const pathname = usePathname();
 
   return (
@@ -53,22 +60,22 @@ export function AdminShell({ children }: Readonly<{ children: ReactNode }>) {
               </p>
             </div>
             <Badge variant="accent" className="bg-[#BADD40] text-[#08101f]">
-              Demo
+              {shellState.badgeLabel}
             </Badge>
           </div>
 
           <div className="mt-6 grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-4">
             <div className="flex items-center justify-between text-sm">
               <span className="text-white/60">Prevádzka</span>
-              <span className="font-medium text-[#E8F3B1]">staging / sk</span>
+              <span className="font-medium text-[#E8F3B1]">{shellState.environmentLabel}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-white/60">Sync</span>
-              <span className="font-medium text-white">02:14 UTC</span>
+              <span className="text-white/60">Zdroj</span>
+              <span className="font-medium text-white">{shellState.sourceLabel}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-white/60">Mode</span>
-              <span className="font-medium text-white">read-only baseline</span>
+              <span className="font-medium text-white">{shellState.modeLabel}</span>
             </div>
           </div>
 
@@ -129,7 +136,7 @@ export function AdminShell({ children }: Readonly<{ children: ReactNode }>) {
                 <Badge variant="muted">RLS zapnuté</Badge>
                 <Badge variant="muted">Webhooky strážime</Badge>
                 <Badge variant="accent" className="bg-[#1E1F48] text-white">
-                  {dashboardCopy.badge}
+                  {shellState.badgeLabel}
                 </Badge>
               </div>
             </div>

@@ -17,6 +17,7 @@
     "@proworkio/ui": "workspace:*",
     "@refinedev/core": "5.0.11",
     "@refinedev/nextjs-router": "7.0.5",
+    "@supabase/supabase-js": "2.100.1",
     "@tanstack/react-query": "5.95.2",
     "lucide-react": "1.7.0",
     "next": "16.2.1",

@@ -1,5 +1,8 @@
+import { getDashboardViewModel } from "@/lib/admin-live-data";
 import { DashboardView } from "@/components/dashboard-view";
 
-export default function HomePage() {
-  return <DashboardView />;
+export default async function HomePage() {
+  const model = await getDashboardViewModel();
+
+  return <DashboardView {...model} />;
 }

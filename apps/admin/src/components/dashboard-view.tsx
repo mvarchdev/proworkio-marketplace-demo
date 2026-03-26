@@ -1,10 +1,9 @@
-"use client";
-
 import { ArrowUpRight, CheckCircle2, Clock3, ShieldAlert, Sparkles } from "lucide-react";
 
 import { Badge, Card } from "@proworkio/ui";
 
-import { dashboardFeed, dashboardMetrics, dashboardQueues, resourceConfigs } from "@/lib/admin-data";
+import { resourceConfigs } from "@/lib/admin-data";
+import type { DashboardViewModel } from "@/lib/admin-live-data";
 import { PageHeader } from "./page-header";
 
 function toneClass(tone: "accent" | "muted" | "dark") {
@@ -49,13 +48,19 @@ function FeedItem({ title, detail, time, tone }: { title: string; detail: string
   );
 }
 
-export function DashboardView() {
-  const requestsCount = resourceConfigs.requests.rows.length;
-  const companiesCount = resourceConfigs.companies.rows.length;
-  const paymentsCount = resourceConfigs.payments.rows.length;
-  const notificationsCount = resourceConfigs.notifications.rows.length;
-  const webhooksCount = resourceConfigs.webhooks.rows.length;
-
+export function DashboardView({
+  metrics,
+  queues,
+  feed,
+  resourceHighlights,
+  requestsCount,
+  companiesCount,
+  paymentsCount,
+  notificationsCount,
+  webhooksCount,
+  headerBadge,
+  priorityCount,
+}: DashboardViewModel) {
   return (
     <section className="space-y-8">
       <PageHeader
@@ -63,11 +68,11 @@ export function DashboardView() {
         title="Prevádzkový panel"
         description="Na jednom mieste sledujeme nové dopyty, schvaľovanie firiem, webhooky, platby a fallbacky notifikácií."
         action={{ label: "Otvoriť dopyty", href: "/dopyty", variant: "primary" }}
-        badge="staging / demo"
+        badge={headerBadge}
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {dashboardMetrics.map((metric) => (
+        {metrics.map((metric) => (
           <StatTile key={metric.label} {...metric} />
         ))}
       </div>
@@ -81,12 +86,12 @@ export function DashboardView() {
             </div>
             <Badge variant="accent" className="bg-[#BADD40] text-[#08101f]">
               <ArrowUpRight className="mr-1 h-3.5 w-3.5" />
-              3 kritické
+              {priorityCount} kritické
             </Badge>
           </div>
 
           <div className="grid gap-3">
-            {dashboardQueues.map((item) => (
+            {queues.map((item) => (
               <div key={item.title} className="rounded-3xl border border-slate-200 px-5 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="font-medium text-slate-900">{item.title}</p>
@@ -152,8 +157,8 @@ export function DashboardView() {
               <ShieldAlert className="h-5 w-5 text-slate-400" />
             </div>
             <div className="space-y-3">
-              {dashboardFeed.map((entry) => (
-                <FeedItem key={entry.title} {...entry} />
+              {feed.map((entry) => (
+                <FeedItem key={`${entry.title}-${entry.time}`} {...entry} />
               ))}
             </div>
           </Card>
@@ -174,7 +179,7 @@ export function DashboardView() {
               <p className="text-sm font-medium text-slate-900">{resource.title}</p>
               <p className="mt-1 text-sm leading-6 text-slate-600">{resource.description}</p>
               <p className="mt-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-                {resource.signals[0]?.value ?? "0"}
+                {resourceHighlights[resource.key] ?? resource.signals[0]?.value ?? "0"}
               </p>
             </div>
           ))}

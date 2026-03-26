@@ -1,5 +1,8 @@
+import { getResourceViewModel } from "@/lib/admin-live-data";
 import { ResourceView } from "@/components/resource-view";
 
-export default function CompaniesPage() {
-  return <ResourceView resource="companies" />;
+export default async function CompaniesPage() {
+  const model = await getResourceViewModel("companies");
+
+  return <ResourceView {...model} />;
 }
