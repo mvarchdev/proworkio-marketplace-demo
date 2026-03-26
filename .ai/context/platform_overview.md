@@ -18,6 +18,11 @@ Primary platform dependencies:
 - PostHog for product analytics
 - Sentry for error monitoring
 
+Operational deployment note:
+
+- The intended production path remains Vercel plus Supabase Cloud.
+- The repository also supports Render-hosted demo deployments for `apps/web` and `apps/admin` via the shared `scripts/next-start.mjs` wrapper, which normalizes forwarded runtime flags such as `--hostname` and `--port`.
+
 Documentation and operational baseline:
 
 - Root README: `README.md`

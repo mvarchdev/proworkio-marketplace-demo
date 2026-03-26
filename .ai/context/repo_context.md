@@ -28,3 +28,4 @@ Validated operational findings:
 - `pnpm db:types` now generates a real schema file from the local Supabase stack after migrations and seed data are applied.
 - Demo seed data produces deterministic request-to-company matches for the two canonical requests.
 - Next.js auth routes that use `useSearchParams()` must render `AuthCard` under `Suspense` to keep production builds green on Next.js 16.
+- Render-style runtime commands that append `--hostname` and `--port` are supported through `scripts/next-start.mjs`, so demo-hosted `apps/web` and `apps/admin` instances can reuse the package `start` scripts safely.

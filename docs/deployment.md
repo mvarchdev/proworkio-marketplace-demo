@@ -7,6 +7,12 @@ The intended deployment path is:
 - Supabase Cloud for each environment
 - GitHub Actions for CI checks
 
+## Demo hosting
+
+- The monorepo can also be hosted as a demo on Render using the package `start` scripts from `apps/web` and `apps/admin`.
+- Those scripts use the shared startup wrapper in `scripts/next-start.mjs` so Render-style forwarded arguments such as `--hostname` and `--port` are handled correctly.
+- This path is appropriate for seeded demo environments and operator previews, not as the preferred production target.
+
 ## Environments
 
 - Local - developer machine plus local Supabase CLI
@@ -42,4 +48,3 @@ The intended deployment path is:
 - Email/SMS fallbacks are configured.
 - Public pages render in Slovak.
 - Sentry and PostHog env variables are set.
-

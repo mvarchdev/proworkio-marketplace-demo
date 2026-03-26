@@ -8,4 +8,5 @@
 - Fixed guest request matching so confirmation and local seed flows work for requests without a linked customer account.
 - Added initial domain tests for matching, similarity heuristics, notification fallback helpers, and claim flow helpers.
 - Added Playwright end-to-end coverage for the demo request and company onboarding journeys.
+- Added a shared Next.js startup wrapper so Render-style runtime arguments work for both `apps/web` and `apps/admin`.
 - Validated `pnpm typecheck`, `pnpm lint`, `pnpm test`, and production builds for `apps/web` and `apps/admin`.
