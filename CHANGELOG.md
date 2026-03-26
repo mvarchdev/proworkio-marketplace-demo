@@ -9,4 +9,5 @@
 - Added initial domain tests for matching, similarity heuristics, notification fallback helpers, and claim flow helpers.
 - Added Playwright end-to-end coverage for the demo request and company onboarding journeys.
 - Added a shared Next.js startup wrapper so Render-style runtime arguments work for both `apps/web` and `apps/admin`.
+- Fixed hosted Supabase RPC compatibility by qualifying pgcrypto extension calls and resolving `RETURNS TABLE` variable conflicts inside `submit_guest_request`.
 - Validated `pnpm typecheck`, `pnpm lint`, `pnpm test`, and production builds for `apps/web` and `apps/admin`.

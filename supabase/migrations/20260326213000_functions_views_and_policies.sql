@@ -22,7 +22,7 @@ returns text
 language sql
 stable
 as $$
-  select prefix || '-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 10));
+  select prefix || '-' || upper(substr(replace(extensions.gen_random_uuid()::text, '-', ''), 1, 10));
 $$;
 
 create or replace function public.set_request_public_code()
@@ -444,12 +444,13 @@ language plpgsql
 security definer
 set search_path = ''
 as $$
+#variable_conflict use_column
 declare
   created_request public.requests;
   field_entry jsonb;
   photo_entry jsonb;
-  raw_confirmation_token text := encode(gen_random_bytes(24), 'hex');
-  raw_claim_token text := encode(gen_random_bytes(24), 'hex');
+  raw_confirmation_token text := encode(extensions.gen_random_bytes(24), 'hex');
+  raw_claim_token text := encode(extensions.gen_random_bytes(24), 'hex');
   lat double precision := nullif(input ->> 'latitude', '')::double precision;
   lng double precision := nullif(input ->> 'longitude', '')::double precision;
 begin

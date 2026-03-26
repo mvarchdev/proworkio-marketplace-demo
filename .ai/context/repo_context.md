@@ -29,3 +29,4 @@ Validated operational findings:
 - Demo seed data produces deterministic request-to-company matches for the two canonical requests.
 - Next.js auth routes that use `useSearchParams()` must render `AuthCard` under `Suspense` to keep production builds green on Next.js 16.
 - Render-style runtime commands that append `--hostname` and `--port` are supported through `scripts/next-start.mjs`, so demo-hosted `apps/web` and `apps/admin` instances can reuse the package `start` scripts safely.
+- Hosted Supabase RPC functions that run with `set search_path = ''` must fully qualify extension functions like `extensions.gen_random_bytes()` and use `#variable_conflict use_column` when `RETURNS TABLE` column names overlap with inserted column names.
